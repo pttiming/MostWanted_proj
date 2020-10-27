@@ -104,3 +104,33 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
+function searchByGender(people){
+  let gender = promptFor("Is the person you are searching for male or female? Write Male or Female.", chars);
+  let foundPeople = people.filter(function(person){
+    if(person.gender === gender){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  //To-Do: Find person based on gender that they entered.
+  return foundPeople;
+}
+function searchBydob(people){
+  let month = promptFor("What is the person's birh month? Answer numerically.", chars);
+  let day = promptFor("What is the person's birth day?", chars);
+  let year = promptFor("What is the person's birth year? Answer in four digits.")
+
+  let foundPerson = people.filter(function(person){
+    if(person.dob === month +"/"+ day+"/" + year || person.dob === month +"/0"+ day+"/" + year ){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  // TODO: find the person using the name they entered
+  return foundPerson;
+}
+
