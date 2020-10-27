@@ -33,12 +33,12 @@ function mainMenu(person, people){
     alert("Could not find that individual.");
     return app(people); // restart
   }
-
+  person = person[0];
   let displayOption = prompt("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'");
 
   switch(displayOption){
     case "info":
-    // TODO: get person's info
+      displayPerson(person)
     break;
     case "family":
     // TODO: get person's family
@@ -47,12 +47,12 @@ function mainMenu(person, people){
     // TODO: get person's descendants
     break;
     case "restart":
-    app(people); // restart
+    app(people); 
     break;
     case "quit":
-    return; // stop execution
+    return; 
     default:
-    return mainMenu(person, people); // ask again
+    return mainMenu(person, people); 
   }
 }
 
@@ -126,7 +126,7 @@ function searchByGender(people){
 function searchBydob(people){
   let month = promptFor("What is the person's birth month? Answer numerically.", chars);
   let day = promptFor("What is the person's birth day?", chars);
-  let year = promptFor("What is the person's birth year? Answer in four digits.")
+  let year = promptFor("What is the person's birth year? Answer in four digits.", chars)
 
   let foundPerson = people.filter(function(person){
     if(person.dob === month +"/"+ day+"/" + year || person.dob === month +"/0"+ day+"/" + year ){
@@ -283,7 +283,7 @@ function continueToSearch(value){
     }
     function checkResult(itemToCheck, people){
       if (itemToCheck.length == 1){
-        mainMenu(searchResults, people);
+        mainMenu(itemToCheck, people);
       }
       // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
       else if (itemToCheck.length > 1){
