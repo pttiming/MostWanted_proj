@@ -118,12 +118,72 @@ function searchByGender(people){
   return foundPeople;
 }
 function searchBydob(people){
-  let month = promptFor("What is the person's birh month? Answer numerically.", chars);
+  let month = promptFor("What is the person's birth month? Answer numerically.", chars);
   let day = promptFor("What is the person's birth day?", chars);
   let year = promptFor("What is the person's birth year? Answer in four digits.")
 
   let foundPerson = people.filter(function(person){
     if(person.dob === month +"/"+ day+"/" + year || person.dob === month +"/0"+ day+"/" + year ){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  // TODO: find the person using the name they entered
+  return foundPerson;
+}
+
+function searchByHeight(people){
+  let height = promptFor("What is the person's height, in inches?", chars);
+
+  let foundPerson = people.filter(function(person){
+    if(person.height === height){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  // TODO: find the person using the name they entered
+  return foundPerson;
+}
+
+function searchByWeight(people){
+  let height = promptFor("What is the person's weight, in pounds?", chars);
+
+  let foundPerson = people.filter(function(person){
+    if(person.weight === weight){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  // TODO: find the person using the name they entered
+  return foundPerson;
+}
+
+function searchByEyeColor(people){
+  let color = promptFor("What is the person's eye color?", chars);
+
+  let foundPerson = people.filter(function(person){
+    if(person.eyeColor === color){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  // TODO: find the person using the name they entered
+  return foundPerson;
+}
+
+function searchByOccupation(people){
+  let occupation = promptFor("What is the person's occupation?", chars);
+
+  let foundPerson = people.filter(function(person){
+    if(person.occupation === occupation){
       return true;
     }
     else{
