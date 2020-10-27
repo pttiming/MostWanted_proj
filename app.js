@@ -12,15 +12,16 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
-      // TODO: search by traits
+      searchResults = searchByTraits(people);
+      checkResult(searchResults, people);
+      //searchResults = continueSearch(searchResults);
+      //Ask if would like to search for more using switchcase
       break;
       default:
     app(people); // restart app
       break;
   }
   
-  // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  mainMenu(searchResults, people);
 }
 
 // Menu function to call once you find who you are looking for
@@ -83,6 +84,11 @@ function displayPerson(person){
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
+  personInfo += "Date of Birth:" + person.dob + "\n";
+  personInfo += "Height:" + person.height + "\n";
+  personInfo += "Weight:"+ person.weight + "\n";
+  personInfo += "Eye Color:"+ person.eyeColor + "\n";
+  personInfo += "Occupation:"+ person.occupation + "\n";
   // TODO: finish getting the rest of the information to display
   alert(personInfo);
 }
@@ -114,7 +120,7 @@ function searchByGender(people){
       return false;
     }
   })
-  //To-Do: Find person based on gender that they entered.
+  
   return foundPeople;
 }
 function searchBydob(people){
@@ -130,7 +136,7 @@ function searchBydob(people){
       return false;
     }
   })
-  // TODO: find the person using the name they entered
+ 
   return foundPerson;
 }
 
@@ -138,29 +144,29 @@ function searchByHeight(people){
   let height = promptFor("What is the person's height, in inches?", chars);
 
   let foundPerson = people.filter(function(person){
-    if(person.height === height){
+    if(person.height == height){
       return true;
     }
     else{
       return false;
     }
   })
-  // TODO: find the person using the name they entered
+  
   return foundPerson;
 }
 
 function searchByWeight(people){
-  let height = promptFor("What is the person's weight, in pounds?", chars);
+  let weight = promptFor("What is the person's weight, in pounds?", chars);
 
   let foundPerson = people.filter(function(person){
-    if(person.weight === weight){
+    if(person.weight == weight){
       return true;
     }
     else{
       return false;
     }
   })
-  // TODO: find the person using the name they entered
+  
   return foundPerson;
 }
 
@@ -175,7 +181,7 @@ function searchByEyeColor(people){
       return false;
     }
   })
-  // TODO: find the person using the name they entered
+ 
   return foundPerson;
 }
 
@@ -190,7 +196,100 @@ function searchByOccupation(people){
       return false;
     }
   })
-  // TODO: find the person using the name they entered
+  
   return foundPerson;
 }
 
+function searchByTraits(people){
+  let traitSearch;
+  let searchType = promptFor("What trait would you like to search by. Type 'gender', 'dob', 'height', 'weight', 'eye color', or 'occupation'", chars).toLowerCase();
+  switch(searchType){
+    case 'gender':
+      traitSearch = searchByGender(people);
+      traitSearch = continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'dob':
+      traitSearch = searchBydob(people);
+      traitSearch = continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'height':
+      traitSearch = searchByHeight(people);
+      traitSearch = continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'weight':
+      traitSearch = searchByWeight(people);
+      traitSearch = continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'eye color':
+      traitSearch = searchByEyeColor(people);
+      traitSearch = continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'occupation':
+      traitSearch = searchByOccupation(people);
+      traitSearch = continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+      
+    default:
+    app(people);
+      break;
+  }
+}
+function findDescendents(people){
+
+}
+function continueSearch(people){
+  let searchType = promptFor("Would you like to search by more criteria? Enter 'yes' or 'no'", yesNo).toLowerCase();
+  //let searchResults;
+  let searchArray;
+  switch(searchType){
+    case 'yes':
+      searchResults = searchByTraits(people);
+      continueSearch(searchResults)
+      break;
+    case 'no':
+      //return to them to the main app method.
+      return people;
+    default: 
+      continueSearch(people);
+      break;
+  }
+}
+function continueToSearch(value){
+    if(value.length == 1){
+      return value;
+    }
+    else if(value.length == 0 || value.length == null){
+      return; // restart
+    }
+    else{
+      let response = promptFor("Search another trait? Type Yes or No.", yesNo).toLowerCase();
+      if(response == "no"){
+        return value;
+      }
+      else if (response == "yes"){
+        searchByTraits(value);
+        return value;
+      }
+      else{
+        return value;
+      }
+    }
+    }
+    function checkResult(itemToCheck, people){
+      if (itemToCheck.length == 1){
+        mainMenu(searchResults, people);
+      }
+      // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+      else if (itemToCheck.length > 1){
+        alert("Unable to refine search data to only one person. Please start again.")
+        return app(people);
+      }
+    }
+  
+  
