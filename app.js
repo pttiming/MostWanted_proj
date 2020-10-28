@@ -385,7 +385,7 @@ function continueSearch(people, traitSearch){
         return false;
       }
 }
-
+//attempt at using recursion.
 function filterTraits(people, traitSearch){
   traitSearch = searchByTraits(people, traitSearch)
   while(continueSearch() == true){
