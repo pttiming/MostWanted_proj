@@ -42,8 +42,8 @@ function mainMenu(person, people){
       displayPerson(person)
     break;
     case "family":
-    let spouse = findSpouse(person, people);
-    diplayFamily(spouse)
+    let family = findFamily(person, people);
+    diplayFamily(family)
     break;
     case "descendants":
       var family = [];
@@ -383,10 +383,15 @@ function findSpouse(person, people){
         return false;
       }
     }
-  })      
-  if(spouse !== null){
-      spouse[0].realtion = "Spouse";
+  })
+  spouse[0] = spouse;      
+  if(spouse !== null || spouse !== []){
+      spouse.realtion = "Spouse";
     
   }
+  else{
+    return null;
+  }
+  
   return spouse;
 }
