@@ -42,13 +42,13 @@ function mainMenu(person, people){
       displayPerson(person)
     break;
     case "family":
-    // TODO: get person's family
+    let siblings = findParents(person, people);
+    displayPeople(siblings);
     break;
     case "descendants":
       var family = [];
       let descendants = findDescendents(person, people, family);
       displayPeople(family);
-      mainMenu(person, people);
     break;
     case "restart":
     app(people); 
@@ -316,8 +316,54 @@ function findDescendents(person, people, family){
     return family;
   }
 }
-      
 
-    
-  
-  
+function findFamily(person, people){
+let siblings = findSiblings(person, people);
+let parents = findParents(person, people);
+let spouse = findSpouse(person, people);
+let family = [];
+family.concat(siblings, parents, spouse);
+return family;
+}
+
+function findParents(person, people){
+  let parents = [];
+  parents = people.filter(function(other){
+    if(person.parents !== null){
+      if(person.parents.includes(other.id)){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+  })      
+  if(parents !== null){
+    for(var i = 0; i < parents.length; i++){
+      parents[i].realtion = "Parent";
+    }
+  }
+  return parents;
+}
+
+function findSiblings(person, people){
+  let siblings;
+  if(person.parents !== null){
+    for(var i = 0; i < person.parents.length; i++ ){
+      siblings = people.filter(function(other){
+        if(other.parents.includes(person.parents[i]) && other.id !== person.id){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+    }
+  }
+  if(siblings !== null){
+    for(var i = 0; i < siblings.length; i++){
+      siblings[i].realtion = "Sibling";
+    }
+  }
+  return siblings;
+}
