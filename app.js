@@ -42,9 +42,14 @@ function mainMenu(person, people){
       displayPerson(person)
     break;
     case "family":
+<<<<<<< HEAD
     var family = [];
     findFamily(person, people, family);
     displayRelatedPeople(family);
+=======
+    let spouse = findSpouse(person, people);
+    diplayFamily(spouse)
+>>>>>>> d61eea115cd2ae1dd70f170d1362831136e16341
     break;
     case "descendants":
     var descendants = [];
@@ -396,4 +401,27 @@ function findSiblings(person, people, family){
     }
   }
   return family;
+}
+function diplayFamily(people){
+  alert(people.map(function(person){
+    return person.firstName + " " + person.lastName+ ", "+ person.realtion;
+  }).join("\n"));
+}
+function findSpouse(person, people){
+  let spouse = [];
+  spouse = people.filter(function(other){
+    if(person.currentSpouse !== null){
+      if(person.currentSpouse == other.id){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+  })      
+  if(spouse !== null){
+      spouse[0].realtion = "Spouse";
+    
+  }
+  return spouse;
 }
