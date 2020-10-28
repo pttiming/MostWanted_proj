@@ -124,13 +124,20 @@ function yesNo(input){
 }
 
 // helper function to pass in as default promptFor validation
-function chars(input){
+function chars(input, response){
+  //if something not equal to null
   return true; // default validation only
+  // else : app(people)
 }
+function traitsValidate(input){
+  return input.toLowerCase() == "dob" || input.toLowerCase() == "eye color" || input.toLowerCase() == "height" || input.toLowerCase() == "gender" || input.toLowerCase() == "weight" || input.toLowerCase() == "occupation";
+}
+
 function searchByGender(people){
-  let gender = promptFor("Is the person you are searching for male or female? Write Male or Female.", chars);
-  let foundPeople = people.filter(function(person){
-    if(person.gender === gender){
+  let gender = promptFor("What is the person's gender?", chars);
+
+  let foundPerson = people.filter(function(person){
+    if(person.gender == gender){
       return true;
     }
     else{
@@ -138,8 +145,9 @@ function searchByGender(people){
     }
   })
   
-  return foundPeople;
+  return foundPerson;
 }
+
 function searchBydob(people){
   let month = promptFor("What is the person's birth month? Answer numerically.", chars);
   let day = promptFor("What is the person's birth day?", chars);
@@ -219,7 +227,7 @@ function searchByOccupation(people){
 
 function searchByTraits(people){
   let traitSearch;
-  let searchType = promptFor("What trait would you like to search by. Type 'gender', 'dob', 'height', 'weight', 'eye color', or 'occupation'", chars).toLowerCase();
+  let searchType = promptFor("What trait would you like to search by. Type 'gender', 'dob', 'height', 'weight', 'eye color', or 'occupation'", traitsValidate).toLowerCase();
   switch(searchType){
     case 'gender':
       traitSearch = searchByGender(people);
@@ -297,10 +305,13 @@ function continueToSearch(value){
 }
 
 function checkResult(itemToCheck, people){
-  if (itemToCheck.length == 1){
+  if (itemToCheck == undefined){
+    alert("Could not find that individual.");
+    return app(people);
+  }
+   else if (itemToCheck.length == 1){
     mainMenu(itemToCheck, people);
   }
-  // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   else if (itemToCheck.length > 1){
     displayPeople(itemToCheck);
     return app(people);
