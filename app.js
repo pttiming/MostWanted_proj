@@ -10,6 +10,7 @@ function app(people){
   switch(searchType){
     case 'yes':
       searchResults = searchByName(people);
+      mainMenu(searchResults, people)
       break;
     case 'no':
       searchResults = searchByTraits(people);
@@ -44,7 +45,10 @@ function mainMenu(person, people){
     // TODO: get person's family
     break;
     case "descendants":
-    // TODO: get person's descendants
+      var family = [];
+      let descendants = findDescendents(person, people, family);
+      displayPeople(family);
+      mainMenu(person, people);
     break;
     case "restart":
     app(people); 
@@ -240,9 +244,6 @@ function searchByTraits(people){
       break;
   }
 }
-function findDescendents(people){
-
-}
 function continueSearch(people){
   let searchType = promptFor("Would you like to search by more criteria? Enter 'yes' or 'no'", yesNo).toLowerCase();
   //let searchResults;
@@ -280,16 +281,43 @@ function continueToSearch(value){
         return value;
       }
     }
-    }
-    function checkResult(itemToCheck, people){
-      if (itemToCheck.length == 1){
-        mainMenu(itemToCheck, people);
+}
+
+function checkResult(itemToCheck, people){
+  if (itemToCheck.length == 1){
+    mainMenu(itemToCheck, people);
+  }
+  // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+  else if (itemToCheck.length > 1){
+    displayPeople(itemToCheck);
+    return app(people);
+  }
+}
+
+function findDescendents(person, people, family){
+  let searchPersonId = person.id;
+  let descendants = people.filter(function(person){
+      if(person.parents.includes(searchPersonId)){
+        return true;
       }
-      // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-      else if (itemToCheck.length > 1){
-        alert("Unable to refine search data to only one person. Please start again.")
-        return app(people);
+      else{
+        return false;
       }
+  })
+  for(var i = 0; i < descendants.length; i++){
+    family.push(descendants[i]);
+  }
+  if(descendants !== null){
+    for(var i = 0; i < descendants.length; i++){
+      findDescendents(descendants[i], people, family)
     }
+  }
+  else{
+    return family;
+  }
+}
+      
+
+    
   
   
