@@ -86,9 +86,14 @@ function displayPeople(people){
 
 // alerts a list of people with their relation
 function displayRelatedPeople(people){
-  alert(people.map(function(person){
-    return person.firstName + " " + person.lastName+ " - " + person.relation;
-  }).join("\n"));
+  if(people.length != 0){
+    alert(people.map(function(person){
+      return person.firstName + " " + person.lastName+ " - " + person.relation;
+    }).join("\n"));
+  }
+  else{
+    alert("This person has no immediate family"); 
+  }
 }
 
 function displayPerson(person){
@@ -396,27 +401,4 @@ function findSiblings(person, people, family){
     }
   }
   return family;
-}
-function diplayFamily(people){
-  alert(people.map(function(person){
-    return person.firstName + " " + person.lastName+ ", "+ person.realtion;
-  }).join("\n"));
-}
-function findSpouse(person, people){
-  let spouse = [];
-  spouse = people.filter(function(other){
-    if(person.currentSpouse !== null){
-      if(person.currentSpouse == other.id){
-        return true;
-      }
-      else{
-        return false;
-      }
-    }
-  })      
-  if(spouse !== null){
-      spouse[0].realtion = "Spouse";
-    
-  }
-  return spouse;
 }
