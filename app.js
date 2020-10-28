@@ -377,7 +377,7 @@ function searchByTraits(people, traitSearch){
 }
 
 function continueSearch(people, traitSearch){
-  let response = promptFor("Would you like to filter your search by trait? Type Yes or No.", yesNo).toLowerCase();
+  let response = promptFor("Would you like to filter your search by a specific trait? Type Yes or No.", yesNo).toLowerCase();
       if(response == "yes"){
         return true;
       }
