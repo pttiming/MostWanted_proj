@@ -14,7 +14,8 @@ function app(people){
       break;
     case 'no':
       let traitSearch = [];
-      searchResults = searchByTraits(people, traitSearch);
+      searchResults = filterTraits(people, traitSearch);
+      
       checkResult(searchResults, people);
       //searchResults = continueSearch(searchResults);
       //Ask if would like to search for more using switchcase
@@ -137,7 +138,7 @@ function traitsValidate(input){
 function searchByGender(people, filtered){
   let gender = promptFor("What is the person's gender?", chars);
 
-  let foundPerson = people.filter(function(person){
+  filtered = people.filter(function(person){
     if(person.gender == gender){
       return true;
     }
@@ -145,9 +146,7 @@ function searchByGender(people, filtered){
       return false;
     }
   })
-  for (var i = 0; i < foundPerson.length; i++){
-    filtered.push(foundPerson[i]);
-  }
+  
   return filtered;
 }
 
@@ -156,7 +155,7 @@ function searchBydob(people, filtered){
   let day = promptFor("What is the person's birth day?", chars);
   let year = promptFor("What is the person's birth year? Answer in four digits.", chars)
 
-  let foundPerson = people.filter(function(person){
+  filtered = people.filter(function(person){
     if(person.dob === month +"/"+ day+"/" + year || person.dob === month +"/0"+ day+"/" + year ){
       return true;
     }
@@ -164,16 +163,14 @@ function searchBydob(people, filtered){
       return false;
     }
   })
-  for (var i = 0; i < foundPerson.length; i++){
-    filtered.push(foundPerson[i]);
-  }
+
   return filtered;
 }
 
 function searchByHeight(people, filtered){
   let height = promptFor("What is the person's height, in inches?", chars);
 
-  let foundPerson = people.filter(function(person){
+  filtered = people.filter(function(person){
     if(person.height == height){
       return true;
     }
@@ -181,16 +178,14 @@ function searchByHeight(people, filtered){
       return false;
     }
   })
-  for (var i = 0; i < foundPerson.length; i++){
-    filtered.push(foundPerson[i]);
-  }
+
   return filtered;
 }
 
 function searchByWeight(people, filtered){
   let weight = promptFor("What is the person's weight, in pounds?", chars);
 
-  let foundPerson = people.filter(function(person){
+  filtered = people.filter(function(person){
     if(person.weight == weight){
       return true;
     }
@@ -198,16 +193,13 @@ function searchByWeight(people, filtered){
       return false;
     }
   })
-  for (var i = 0; i < foundPerson.length; i++){
-    filtered.push(foundPerson[i]);
-  }
   return filtered;
 }
 
 function searchByEyeColor(people, filtered){
   let color = promptFor("What is the person's eye color?", chars);
 
-  let foundPerson = people.filter(function(person){
+  filtered = people.filter(function(person){
     if(person.eyeColor === color){
       return true;
     }
@@ -215,16 +207,14 @@ function searchByEyeColor(people, filtered){
       return false;
     }
   })
-  for (var i = 0; i < foundPerson.length; i++){
-    filtered.push(foundPerson[i]);
-  }
+  
   return filtered;
 }
 
 function searchByOccupation(people, filtered){
   let occupation = promptFor("What is the person's occupation?", chars);
 
-  let foundPerson = people.filter(function(person){
+  filtered = people.filter(function(person){
     if(person.occupation === occupation){
       return true;
     }
@@ -232,76 +222,13 @@ function searchByOccupation(people, filtered){
       return false;
     }
   })
-  for (var i = 0; i < foundPerson.length; i++){
-    filtered.push(foundPerson[i]);
-    
-  }
+  
   return filtered;
-}
-
-function searchByTraits(people, traitSearch){
-  let searchType = promptFor("What trait would you like to search by. Type 'gender', 'dob', 'height', 'weight', 'eye color', or 'occupation'", traitsValidate).toLowerCase();
-  switch(searchType){
-    case 'gender':
-      searchByGender(people, traitSearch);
-      continueToSearch(traitSearch);
-      return traitSearch;
-      break;
-    case 'dob':
-      searchBydob(people, traitSearch);
-      continueToSearch(traitSearch);
-      return traitSearch;
-      break;
-    case 'height':
-     searchByHeight(people, traitSearch);
-     continueToSearch(traitSearch);
-      return traitSearch;
-      break;
-    case 'weight':
-      searchByWeight(people, traitSearch);
-      continueToSearch(traitSearch);
-      return traitSearch;
-      break;
-    case 'eye color':
-      searchByEyeColor(people, traitSearch);
-      continueToSearch(traitSearch);
-      return traitSearch;
-      break;
-    case 'occupation':
-     searchByOccupation(people, traitSearch);
-     continueToSearch(traitSearch);
-      return traitSearch;
-      break;
-      
-    default:
-    app(people);
-      break;
-  }
-}
-function continueToSearch(value){
-    if(value.length == 1){
-      return value;
-    }
-    else if(value.length == 0 || value.length == null){
-      return; 
-    }
-    else{
-      let response = promptFor("Search another trait? Type Yes or No.", yesNo).toLowerCase();
-      if(response == "yes"){
-        searchByTraits(value, value);
-        //return value;
-        return;
-      }
-      else{
-        //return value;
-        return;
-      }
-    }
 }
 
 function checkResult(itemToCheck, people){
   if (itemToCheck == undefined){
-    alert("Could not find that individual.");
+    alert("Could not find anyone that matches your search.  Try");
     return app(people);
   }
    else if (itemToCheck.length == 1){
@@ -408,3 +335,62 @@ function findSiblings(person, people, family){
   }
   return family;
 }
+
+function searchByTraits(people, traitSearch){
+  let searchType = promptFor("What trait would you like to search by. Type 'gender', 'dob', 'height', 'weight', 'eye color', or 'occupation'", traitsValidate).toLowerCase();
+  switch(searchType){
+    case 'gender':
+      traitSearch = searchByGender(people, traitSearch);
+      //continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'dob':
+      traitSearch = searchBydob(people, traitSearch);
+      //continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'height':
+      traitSearch = searchByHeight(people, traitSearch);
+     //continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'weight':
+      traitSearch = searchByWeight(people, traitSearch);
+      //continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'eye color':
+      traitSearch = searchByEyeColor(people, traitSearch);
+      //continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+    case 'occupation':
+      traitSearch = searchByOccupation(people, traitSearch);
+     //continueToSearch(traitSearch);
+      return traitSearch;
+      break;
+      
+    default:
+    app(people);
+      break;
+  }
+}
+
+function continueSearch(people, traitSearch){
+  let response = promptFor("Would you like to filter your search by trait? Type Yes or No.", yesNo).toLowerCase();
+      if(response == "yes"){
+        return true;
+      }
+      else if(response == "no"){
+        return false;
+      }
+}
+
+function filterTraits(people, traitSearch){
+  traitSearch = searchByTraits(people, traitSearch)
+  while(continueSearch() == true){
+    traitSearch = searchByTraits(traitSearch, traitSearch);
+  }
+  return traitSearch;
+}
+
