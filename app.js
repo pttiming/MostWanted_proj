@@ -42,13 +42,14 @@ function mainMenu(person, people){
       displayPerson(person)
     break;
     case "family":
-    let siblings = findParents(person, people);
-    displayPeople(siblings);
+    var family = [];
+    findFamily(person, people, family);
+    displayRelatedPeople(family);
     break;
     case "descendants":
-      var family = [];
-      let descendants = findDescendents(person, people, family);
-      displayPeople(family);
+    var descendants = [];
+    findDescendents(person, people, descendants);
+    displayPeople(descendants);
     break;
     case "restart":
     app(people); 
@@ -80,6 +81,13 @@ function searchByName(people){
 function displayPeople(people){
   alert(people.map(function(person){
     return person.firstName + " " + person.lastName;
+  }).join("\n"));
+}
+
+// alerts a list of people with their relation
+function displayRelatedPeople(people){
+  alert(people.map(function(person){
+    return person.firstName + " " + person.lastName+ " - " + person.relation;
   }).join("\n"));
 }
 
@@ -317,16 +325,36 @@ function findDescendents(person, people, family){
   }
 }
 
-function findFamily(person, people){
-let siblings = findSiblings(person, people);
-let parents = findParents(person, people);
-let spouse = findSpouse(person, people);
-let family = [];
-family.concat(siblings, parents, spouse);
+function findFamily(person, people, family){
+findSiblings(person, people, family);
+findParents(person, people, family);
+findSpouse(person, people, family);
 return family;
 }
 
-function findParents(person, people){
+function findSpouse(person, people, family){
+  let spouse;
+   spouse = people.filter(function(other){
+    if(person.currentSpouse != null){
+      if(person.currentSpouse == other.id){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+  })      
+  if(spouse != null){
+    for(var i = 0; i < spouse.length; i++){
+      spouse[i].relation = "Spouse";
+      family.push(spouse[i]);
+    }
+  }
+  return family;
+}
+
+
+function findParents(person, people, family){
   let parents = [];
   parents = people.filter(function(other){
     if(person.parents !== null){
@@ -338,17 +366,18 @@ function findParents(person, people){
       }
     }
   })      
-  if(parents !== null){
+  if(parents != null){
     for(var i = 0; i < parents.length; i++){
-      parents[i].realtion = "Parent";
+      parents[i].relation = "Parent";
+      family.push(parents[i]);
     }
   }
-  return parents;
+  return family;
 }
 
-function findSiblings(person, people){
+function findSiblings(person, people, family){
   let siblings;
-  if(person.parents !== null){
+  if(person.parents != null){
     for(var i = 0; i < person.parents.length; i++ ){
       siblings = people.filter(function(other){
         if(other.parents.includes(person.parents[i]) && other.id !== person.id){
@@ -360,10 +389,11 @@ function findSiblings(person, people){
       })
     }
   }
-  if(siblings !== null){
+  if(siblings != null){
     for(var i = 0; i < siblings.length; i++){
-      siblings[i].realtion = "Sibling";
+      siblings[i].relation = "Sibling";
+      family.push(siblings[i]);
     }
   }
-  return siblings;
+  return family;
 }
