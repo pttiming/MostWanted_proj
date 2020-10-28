@@ -42,8 +42,8 @@ function mainMenu(person, people){
       displayPerson(person)
     break;
     case "family":
-    let siblings = findParents(person, people);
-    displayPeople(siblings);
+    let spouse = findSpouse(person, people);
+    diplayFamily(spouse)
     break;
     case "descendants":
       var family = [];
@@ -366,4 +366,27 @@ function findSiblings(person, people){
     }
   }
   return siblings;
+}
+function diplayFamily(people){
+  alert(people.map(function(person){
+    return person.firstName + " " + person.lastName+ ", "+ person.realtion;
+  }).join("\n"));
+}
+function findSpouse(person, people){
+  let spouse = [];
+  spouse = people.filter(function(other){
+    if(person.currentSpouse !== null){
+      if(person.currentSpouse == other.id){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+  })      
+  if(spouse !== null){
+      spouse[0].realtion = "Spouse";
+    
+  }
+  return spouse;
 }
